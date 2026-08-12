@@ -1,0 +1,127 @@
+#include <stdio.h>
+
+int Quotient(int number1, int number2){
+    return number1 / number2;
+}
+int Modulus(int number1, int number2){
+    return number1 % number2;
+}
+int Factorial(int number1) {
+    int result = 1;
+        for (int i = 1; i <= number1; i++) {
+            result = result * i;
+    }
+        return result;
+}
+
+int RaiseToPower( int number1,int number2){
+    int result = 1;
+    int i;
+     for (i = 0; i< number2; i++){
+       result = result * number1;
+    }
+     return result;
+}
+
+int add( int number1,int number2){
+    int result = number1 + number2;
+    return result;
+}
+int multiply( int number1,int number2){
+    int result = number1 * number2;
+    return result;
+}
+int sub( int number1,int number2){
+    int result = number1 - number2;
+    return result;
+}
+int divide( int number1,int number2){
+    int result = number1 / number2;
+    return result;
+}
+
+int main()
+{
+    int number1, number2;
+    char option;
+    double result;
+
+
+    while(1)
+    {
+        printf("Enter a for Addition:\n");
+        printf("Enter m for Multiplication:\n");
+        printf("Enter s for Subtraction:\n");
+        printf("Enter d for Division:\n");
+        printf("Enter p for RaiseToPower:\n");
+        printf("Enter f for Factorial:\n");
+        printf("Enter q for QuotientAndModulus:\n");
+        printf("Enter e to End Calculator:\n");
+        printf("choice: ");
+        scanf(" %c", &option);
+        if(option != 'a' && option != 'm' && option != 'q' && option != 's'
+           && option != 'd' && option != 'p' && option != 'f' && option != 'e')
+        {
+            printf("Invalid option. Please enter only a or m or q or s or d or p or f or e\n");
+        }
+            else if(option == 'e'){
+            printf ("Goodbye");
+            break;
+        }
+        else
+        {
+            if(option == 'f'){
+                printf("Enter number for factorial: ");
+                scanf("%d", &number1);
+                    result = Factorial(number1);
+            }
+            else
+            {
+            printf("Enter first number:");
+            scanf("%d", &number1);
+            printf("Enter second number:");
+            scanf("%d", &number2);
+            }
+            if(number1 < 0 || number2 < 0){
+                printf("Error only accept positive numbers\n");
+                //result = 0;
+            }else{
+                if(option == 'a') {
+                   result = add(number1,number2);
+                    printf("Result: %.1lf\n", result);
+                }
+                if(option == 'm'){
+                    result = multiply(number1,number2);
+                    printf("Result: %.1lf\n", result);
+                }
+                if(option == 's'){
+                    result = sub(number1,number2);
+                    printf("Result: %.1lf\n", result);
+                }
+                if(option == 'p'){
+                    result = RaiseToPower(number1, number2);
+                        printf("Result: %.1lf\n", result);
+                }
+                if(option == 'f'){
+                    result = Factorial(number1);
+                        printf("Result: %.1lf\n", result);
+                }
+                if (option == 'q'){
+                    printf("Quotient: %d\n", Quotient(number1, number2));
+                    printf("Modulus: %d\n", Modulus(number1, number2));
+                }
+                if(option == 'd'){
+                    if (number2 == 0){
+                        printf("Division by Zero is not allowed\n");
+                        continue;
+                    }else{
+                        result = divide(number1,number2);
+                        printf("Result: %lf\n", result);
+                    }
+                }
+            }
+        }
+    }
+}
+
+
