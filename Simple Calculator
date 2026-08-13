@@ -39,38 +39,89 @@ int divide( int number1,int number2){
     int result = number1 / number2;
     return result;
 }
+int calculateString(char expression[]) {
+
+    int i = 0;
+    int result = 0;
+    int number = 0;
+    char operation = '+';
+     while (expression[i] != '\0') {
+
+        number = 0;
+
+        while (expression[i] >= '0' && expression[i] <= '9') {
+            number = number * 10 + (expression[i] - '0');
+            i++;
+        }
+        if (operation == '+') {
+            result = result + number;
+        }
+        else if (operation == '-') {
+            result = result - number;
+        }
+        else if (operation == '*') {
+            result = result * number;
+        }
+        else if (operation == '/') {
+            if (number == 0) {
+                printf("Division by zero is not allowed.\n");
+                return 0;
+            }
+            result = result / number;
+        }
+        if (expression[i] != '\0') {
+            operation = expression[i];
+            i++;
+        }
+    }
+
+    return result;
+}
 
 int main()
 {
+
     int number1, number2;
     char option;
+    char expression[100];
     double result;
 
 
     while(1)
     {
-        printf("Enter a for Addition:\n");
-        printf("Enter m for Multiplication:\n");
-        printf("Enter s for Subtraction:\n");
-        printf("Enter d for Division:\n");
-        printf("Enter p for RaiseToPower:\n");
-        printf("Enter f for Factorial:\n");
-        printf("Enter q for QuotientAndModulus:\n");
-        printf("Enter e to End Calculator:\n");
+        printf("Enter 1 for Addition:\n");
+        printf("Enter 2 for Multiplication:\n");
+        printf("Enter 3 for Subtraction:\n");
+        printf("Enter 4 for Division:\n");
+        printf("Enter 5 for RaiseToPower:\n");
+        printf("Enter 6 for Factorial:\n");
+        printf("Enter 7 for QuotientAndModulus:\n");
+        printf("Enter 8 for StringCalculator:\n");
+        printf("Enter 9 to End Calculator:\n");
         printf("choice: ");
         scanf(" %c", &option);
-        if(option != 'a' && option != 'm' && option != 'q' && option != 's'
-           && option != 'd' && option != 'p' && option != 'f' && option != 'e')
+        if(option != '1' && option != '2' && option != '3' && option != '4'
+           && option != '5' && option != '6' && option != '7' && option != '8' && option != '9')
         {
-            printf("Invalid option. Please enter only a or m or q or s or d or p or f or e\n");
+            printf("Invalid option. Please enter only 1 or 2 or 3 or 4 or 5 or 6 or 7 or 8 or 9\n");
         }
-            else if(option == 'e'){
+            else if(option == '9'){
             printf ("Goodbye");
             break;
         }
+         else if (option == '8') {
+
+            printf("Enter calculation: ");
+            scanf("%99s", expression);
+
+            result = calculateString(expression);
+
+            printf("Expression: %s\n", expression);
+            printf("Result: %.2lf\n", result);
+        }
         else
         {
-            if(option == 'f'){
+            if(option == '6'){
                 printf("Enter number for factorial: ");
                 scanf("%d", &number1);
                     result = Factorial(number1);
@@ -86,31 +137,31 @@ int main()
                 printf("Error only accept positive numbers\n");
                 //result = 0;
             }else{
-                if(option == 'a') {
+                if(option == '1') {
                    result = add(number1,number2);
                     printf("Result: %.1lf\n", result);
                 }
-                if(option == 'm'){
+                if(option == '2'){
                     result = multiply(number1,number2);
                     printf("Result: %.1lf\n", result);
                 }
-                if(option == 's'){
+                if(option == '3'){
                     result = sub(number1,number2);
                     printf("Result: %.1lf\n", result);
                 }
-                if(option == 'p'){
+                if(option == '5'){
                     result = RaiseToPower(number1, number2);
                         printf("Result: %.1lf\n", result);
                 }
-                if(option == 'f'){
+                if(option == '6'){
                     result = Factorial(number1);
                         printf("Result: %.1lf\n", result);
                 }
-                if (option == 'q'){
+                if (option == '7'){
                     printf("Quotient: %d\n", Quotient(number1, number2));
                     printf("Modulus: %d\n", Modulus(number1, number2));
                 }
-                if(option == 'd'){
+                if(option == '4'){
                     if (number2 == 0){
                         printf("Division by Zero is not allowed\n");
                         continue;
