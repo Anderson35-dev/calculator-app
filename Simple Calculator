@@ -135,7 +135,7 @@ int main()
             }
             if(number1 < 0 || number2 < 0){
                 printf("Error only accept positive numbers\n");
-                //result = 0;
+
             }else{
                 if(option == '1') {
                    result = add(number1,number2);
