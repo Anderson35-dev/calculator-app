@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+#include <stdlib.h>
 
 int Quotient(int number1, int number2){
     return number1 / number2;
@@ -23,60 +26,162 @@ int RaiseToPower( int number1,int number2){
      return result;
 }
 
-int add( int number1,int number2){
-    int result = number1 + number2;
+double add( double number1,double number2){
+    double result = number1 + number2;
     return result;
 }
-int multiply( int number1,int number2){
-    int result = number1 * number2;
+double multiply( double number1,double number2){
+    double result = number1 * number2;
     return result;
 }
-int sub( int number1,int number2){
-    int result = number1 - number2;
+double sub( double  number1,double  number2){
+    double result = number1 - number2;
     return result;
 }
-int divide( int number1,int number2){
-    int result = number1 / number2;
+double divide( double number1,double number2){
+    double result = number1 / number2;
     return result;
 }
-int calculateString(char expression[]) {
 
-    int i = 0;
+
+int String_to_int_reversed(char str[], int string_size, bool is_negative){
     int result = 0;
-    int number = 0;
-    char operation = '+';
-     while (expression[i] != '\0') {
+    int i = string_size - 1;
 
-        number = 0;
+    while (i >= 0) {
+        result = result * 10 + (str[i] - '0');
+        i--;
+    }
+    if(is_negative == true){
+        return result * -1;
+    }else{
+        return result;
+    }
+}
 
-        while (expression[i] >= '0' && expression[i] <= '9') {
-            number = number * 10 + (expression[i] - '0');
-            i++;
-        }
-        if (operation == '+') {
-            result = result + number;
-        }
-        else if (operation == '-') {
-            result = result - number;
-        }
-        else if (operation == '*') {
-            result = result * number;
-        }
-        else if (operation == '/') {
-            if (number == 0) {
-                printf("Division by zero is not allowed.\n");
-                return 0;
-            }
-            result = result / number;
-        }
-        if (expression[i] != '\0') {
-            operation = expression[i];
-            i++;
-        }
+bool is_it_operator(char character){
+    if(character == '+' || character == '-' || character == '/' || character == '*'){
+        return true;
+    }
+    else return false;
+}
+  int extract_subexpression (char exp[], int sizeofexp, char sub_exp[], int size_of_exp, int index_of_operator){
+    int k = index_of_operator - 1;
+    while (k >= 0 && !is_it_operator(exp[k])) k--;
+    int start_length = k + 1;
+    if(k == 0 && exp[k] == '-'){
+        start_length--;
     }
 
-    return result;
+    int m = index_of_operator + 1;
+    int start = m;
+    while (m < sizeofexp){
+        if(m != start && is_it_operator(exp[m])){
+            break;
+        }
+        m++;
+    }
+    int end_length = m;
+
+    int j = 0;
+    for (int i = start_length; i < end_length; i++) {
+        sub_exp[j] = exp[i];
+        j++;
+    }
+    sub_exp[j] = '\0';
+
+    return start_length;
 }
+double Subcalculator(char expression[],int length, int index_of_op){
+    printf("Expression is: %s\n length is: %d\n index_of_op is: %d\n", expression, length, index_of_op);
+    char operation = expression [index_of_op];
+    printf("The operator is: %c\n",operation);
+
+    char temp[100];
+    int j = 0;
+
+
+    double first_number = 0;
+    int k = index_of_op - 1;
+    while(k >= 0 && !is_it_operator(expression[k])){
+        temp[j] = expression[k];
+        j++;
+        k--;
+    }
+    bool neg = false;
+    if(k == 0 && expression[k] == '-'){
+        neg = true;
+    }
+    temp[j] = '\0';
+    printf("temp is: %s\n", temp);
+    first_number = String_to_int_reversed(temp, strlen(temp), neg);
+
+    j = 0;
+    double second_number = 0;
+    int m = index_of_op + 1;
+    int start = m;
+    while(m < length){
+        if(m != start && is_it_operator(expression[m])){
+            break;
+        }
+        temp[j] = expression[m];
+        m++;
+        j++;
+    }
+    temp[j] = '\0';
+    second_number = atoi(temp);
+        printf("This is First Number %f\n", first_number);
+        printf("This is Second Number %f\n", second_number);
+        if(operation == '+')return add(first_number, second_number);
+        if(operation == '-')return sub(first_number, second_number);
+        if(operation == '*')return multiply(first_number, second_number);
+        if(operation == '/')return divide(first_number, second_number);
+}
+int int_to_string(int number, char str[], int buffer_size){
+     return snprintf(str, buffer_size, "%d", number);
+}
+void replace_expression_with_result(char exp[], int sizeofexp, char subexp[], int sizeofsub, int start_position_of_sub_exp, char result[], int size_of_result){
+    char buffer[100];
+    strncpy(buffer, exp, start_position_of_sub_exp);
+    buffer[start_position_of_sub_exp] = '\0';
+    strcat(buffer, result);
+    int current_length_of_buffer = strlen(buffer);
+    int remainder_exp_index = start_position_of_sub_exp + sizeofsub;
+    strcpy(buffer + current_length_of_buffer, exp + remainder_exp_index);
+    strcpy(exp, buffer);
+}
+void process_operator(char number[], char operation){
+    char sub_exp[20];
+    char result_string[20];
+    double result;
+
+    for(int i = 0; i < strlen(number); i++){
+        if(number[i] == operation){
+                result = Subcalculator(number, strlen(number), i);
+                int_to_string(result, result_string, sizeof(result_string));
+                int start_pos = extract_subexpression(number,strlen(number),sub_exp,sizeof(sub_exp),i);
+                replace_expression_with_result(number,strlen(number),sub_exp,strlen(sub_exp),start_pos,result_string,10);
+                printf("Result: %.2f\n", result);
+                i = 0;
+        }
+    }
+}
+int find(char char_array[], int size_of_array, int starting_position, char character_to_find){
+    for (int i = starting_position; i < size_of_array && char_array[i] != '\0'; i++){
+        if (char_array[i] == character_to_find ){
+            return i;
+        }
+    }
+    return -1;
+}
+double calculateString(char expression[]) {
+    process_operator(expression, '/');
+    process_operator(expression, '*');
+    process_operator(expression, '+');
+    process_operator(expression, '-');
+    return atof(expression);
+}
+
 
 int main()
 {
@@ -96,7 +201,7 @@ int main()
         printf("Enter 5 for RaiseToPower:\n");
         printf("Enter 6 for Factorial:\n");
         printf("Enter 7 for QuotientAndModulus:\n");
-        printf("Enter 8 for StringCalculator:\n");
+        printf("Enter 8 for StringCalculation:\n");
         printf("Enter 9 to End Calculator:\n");
         printf("choice: ");
         scanf(" %c", &option);
