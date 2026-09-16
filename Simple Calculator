@@ -93,13 +93,9 @@ bool is_it_operator(char character){
     return start_length;
 }
 double Subcalculator(char expression[],int length, int index_of_op){
-    printf("Expression is: %s\n length is: %d\n index_of_op is: %d\n", expression, length, index_of_op);
     char operation = expression [index_of_op];
-    printf("The operator is: %c\n",operation);
-
     char temp[100];
     int j = 0;
-
 
     double first_number = 0;
     int k = index_of_op - 1;
@@ -113,7 +109,7 @@ double Subcalculator(char expression[],int length, int index_of_op){
         neg = true;
     }
     temp[j] = '\0';
-    printf("temp is: %s\n", temp);
+8
     first_number = String_to_int_reversed(temp, strlen(temp), neg);
 
     j = 0;
@@ -130,12 +126,12 @@ double Subcalculator(char expression[],int length, int index_of_op){
     }
     temp[j] = '\0';
     second_number = atoi(temp);
-        printf("This is First Number %f\n", first_number);
-        printf("This is Second Number %f\n", second_number);
+
         if(operation == '+')return add(first_number, second_number);
         if(operation == '-')return sub(first_number, second_number);
         if(operation == '*')return multiply(first_number, second_number);
         if(operation == '/')return divide(first_number, second_number);
+
 }
 int int_to_string(int number, char str[], int buffer_size){
      return snprintf(str, buffer_size, "%d", number);
@@ -222,7 +218,7 @@ int main()
             result = calculateString(expression);
 
             printf("Expression: %s\n", expression);
-            printf("Result: %.2lf\n", result);
+            printf("Final Result: %.2lf\n", result);
         }
         else
         {
